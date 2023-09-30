@@ -49,7 +49,7 @@ class ledController {
         const program = req.params.program
         await ledModel.findOneAndUpdate({status: "active"}, {status:"disable"})
         if (program == 1) {
-            let {location, temp_c, condition} = await getWeather("HaNoi")
+            let {location, temp_c, condition} = await getWeather(req.body.location)
             condition = condition.toLowerCase()
             if (condition.includes("sunny")) {
                 condition = "Sunny"
