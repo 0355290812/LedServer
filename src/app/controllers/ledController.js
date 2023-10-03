@@ -57,7 +57,7 @@ class ledController {
                 condition = "Cloudy"
             } else if (condition.includes("rain")) {
                 condition = "Rain"
-            } else if (condition.include("thunder")) {
+            } else if (condition.includes("thunder")) {
                 condition = "Rain with thunder"
             }
             await ledModel.findOneAndUpdate({program: 1}, {location, temp_c, condition, status: "active"})
