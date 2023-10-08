@@ -33,11 +33,15 @@ class ledController {
                     temp_c: result.temp_c,
                     condition: result.condition
                 })
-            } else {
+            } else if (result.program == 2 || result.program == 3) {
                 res.send({
                     program: result.program,
                     text: result.text,
                     color: result.color
+                })
+            } else {
+                res.send({
+                    program: result.program
                 })
             }
         } catch (err) {
@@ -61,6 +65,8 @@ class ledController {
                 condition = "Rain with thunder"
             }
             await ledModel.findOneAndUpdate({program: 1}, {location, temp_c, condition, status: "active"})
+        } else if (program == 4) {
+            await ledModel.findOneAndUpdate({program}, {status: "active"})
         } else {
             const text = req.body.text;
             const color = req.body.color;
@@ -77,6 +83,8 @@ class ledController {
                     temp_c: result.temp_c,
                     condition: result.condition
                 })
+            } else if (program == 4) {
+                        res.send("Kích hoạt hiển thị icon")
             } else {
                 res.send({
                     program: result.program,
