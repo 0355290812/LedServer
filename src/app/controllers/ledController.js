@@ -27,11 +27,22 @@ class ledController {
         try {
             const result = await ledModel.findOne({ status: "active" })
             if (result.program == 1) {
+                let { location, temp_c, condition } = await getWeather(result.location)
+                condition = condition.toLowerCase()
+                if (condition.includes("sunny")) {
+                    condition = "Sunny"
+                } else if (condition.includes("cloudy")) {
+                    condition = "Cloudy"
+                } else if (condition.includes("rain")) {
+                    condition = "Rain"
+                } else if (condition.includes("thunder")) {
+                    condition = "RainwithThunder"
+                }
                 res.send({
                     program: result.program,
-                    location: result.location,
-                    temp_c: result.temp_c,
-                    condition: result.condition
+                    location: location,
+                    temp_c: temp_c,
+                    condition: condition
                 })
             } else if (result.program == 2 || result.program == 3) {
                 res.send({
@@ -51,9 +62,9 @@ class ledController {
 
     async updateData(req, res) {
         const program = req.params.program
-        await ledModel.findOneAndUpdate({status: "active"}, {status:"disable"})
+        await ledModel.findOneAndUpdate({ status: "active" }, { status: "disable" })
         if (program == 1) {
-            let {location, temp_c, condition} = await getWeather(req.body.location)
+            let { location, temp_c, condition } = await getWeather(req.body.location)
             condition = condition.toLowerCase()
             if (condition.includes("sunny")) {
                 condition = "Sunny"
@@ -64,14 +75,14 @@ class ledController {
             } else if (condition.includes("thunder")) {
                 condition = "Rain with thunder"
             }
-            await ledModel.findOneAndUpdate({program: 1}, {location, temp_c, condition, status: "active"})
+            await ledModel.findOneAndUpdate({ program: 1 }, { location, temp_c, condition, status: "active" })
         } else if (program == 4) {
-            await ledModel.findOneAndUpdate({program}, {status: "active"})
+            await ledModel.findOneAndUpdate({ program }, { status: "active" })
         } else {
             const text = req.body.text;
             const color = req.body.color;
             console.log(text, color);
-            await ledModel.findOneAndUpdate({program}, {text, color, status: "active"})
+            await ledModel.findOneAndUpdate({ program }, { text, color, status: "active" })
         }
 
         try {
@@ -84,7 +95,7 @@ class ledController {
                     condition: result.condition
                 })
             } else if (program == 4) {
-                        res.send("Kích hoạt hiển thị icon")
+                res.send("Kích hoạt hiển thị icon")
             } else {
                 res.send({
                     program: result.program,
