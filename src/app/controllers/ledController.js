@@ -38,6 +38,7 @@ class ledController {
                 } else if (condition.includes("thunder")) {
                     condition = "Thunder"
                 }
+                await ledModel.findOneAndUpdate({ program: 1 }, { location, temp_c, condition, status: "active" })
                 res.send({
                     program: result.program,
                     location: location,
