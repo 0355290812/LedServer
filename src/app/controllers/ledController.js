@@ -36,7 +36,7 @@ class ledController {
                 } else if (condition.includes("rain")) {
                     condition = "Rain"
                 } else if (condition.includes("thunder")) {
-                    condition = "RainwithThunder"
+                    condition = "Thunder"
                 }
                 res.send({
                     program: result.program,
