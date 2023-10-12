@@ -80,6 +80,9 @@ class ledController {
         } else if (program == 4) {
             await ledModel.findOneAndUpdate({ program }, { status: "active" })
         } else {
+            if (Object.getOwnPropertyNames(req.body).length === 0) {
+                await ledModel.findOneAndUpdate({ program }, { status: "active" })
+            }
             const text = req.body.text;
             const color = req.body.color;
             console.log(text, color);
